@@ -1,0 +1,35 @@
+import pyodbc
+
+# Define the connection string to your Azure SQL database
+server = 'snitsqlsrv.database.windows.net'
+database = 'snitsqldb'
+username = 'azadmin'
+password = 'Password@123'
+driver = '{ODBC Driver 17 for SQL Server}' # adjust the driver version as needed
+
+conn_string = f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password}'
+
+# Establish a connection to the database
+conn = pyodbc.connect(conn_string)
+
+# Create a cursor object to execute SQL queries
+cursor = conn.cursor()
+
+# Define your SQL query as a string
+query = "INSERT INTO snit (id, name, age) VALUES (?, ?, ?)"
+
+# Define the values to be inserted
+values = [
+    (1, 'John', 25),
+    (2, 'Jane', 30),
+    (3, 'Bob', 40)
+]
+
+# Execute the SQL query
+cursor.executemany(query, values)
+
+# Commit the changes to the database
+conn.commit()
+
+# Close the connection
+conn.close()
